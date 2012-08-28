@@ -28,7 +28,7 @@ class CarRecordsController < ApplicationController
       sheet.row(cars.size+1).concat ["总计", "#{cars.size}"]
       book.write url
     end
-    render :inline => "<script>window.location.href='/records/#{filename}';setTimeout(function(){window.close();},2000)</script>"
+    render :inline => "<script>window.location.href='/records/#{filename}';setTimeout(function(){window.close();},500)</script>"
   end
 
 end
