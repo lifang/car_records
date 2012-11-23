@@ -4,7 +4,7 @@ class CarRecordsController < ApplicationController
   
   def receive_info
     CarRecord.create(:car_type => params[:car_type], :user_area => params[:user_area],
-      :user_name => params[:user_name], :user_phone => params[:user_phone=],
+      :user_name => params[:user_name], :user_phone => params[:user_phone],
       :small_type => params[:small_type], :buy_year => params[:buy_year])
     render :inline=>"response_info({'message':'提交成功'})"
   end
