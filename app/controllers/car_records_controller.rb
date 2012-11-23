@@ -3,9 +3,9 @@ class CarRecordsController < ApplicationController
   require 'spreadsheet'
   
   def receive_info
-    CarRecord.create(:car_type => params[:car_type], :user_area => params[:user_area],
-      :user_name => params[:user_name], :user_phone => params[:user_phone],
-      :small_type => params[:small_type], :buy_year => params[:buy_year])
+    CarRecord.create(:car_type => params[:car_type], :user_area => params[:user_area],:email=>params[:email],
+      :user_name => params[:user_name], :user_phone => params[:user_phone],:car_num=>params[:car_num],
+      :small_type => params[:small_type], :buy_year => params[:buy_year],:birthday=>params[:birthday])
     render :inline=>"response_info({'message':'提交成功'})"
   end
 
@@ -20,11 +20,11 @@ class CarRecordsController < ApplicationController
       Spreadsheet.client_encoding = "UTF-8"
       book = Spreadsheet::Workbook.new
       sheet = book.create_worksheet
-      sheet.row(0).concat %w{编号 姓名 车型  购买年份 区域分布 提交日期}
+      sheet.row(0).concat %w{编号 姓名 车型  购买年份 区域分布 提交日期 车牌号 EMAIL/QQ/微信 生日}
       cars=CarRecord.find :all
       cars.each_with_index do |car, index|
-
-        sheet.row(index+1).concat ["#{car.id}","#{car.user_name}", "#{CarRecord::CAR_TYPES[car.car_type]}#{car.small_type}",car.buy_year,car.user_area,car.created_at.strftime("%Y-%m-%d %H:%M")]
+        sheet.row(index+1).concat ["#{car.id}","#{car.user_name}", "#{CarRecord::CAR_TYPES[car.car_type]}#{car.small_type}",
+          car.buy_year,car.user_area,car.created_at.strftime("%Y-%m-%d %H:%M"),car.car_num,car.email,car.birthday]
       end
       sheet.row(cars.size+1).concat ["总计", "#{cars.size}"]
       book.write url
